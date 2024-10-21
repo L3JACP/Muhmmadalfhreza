@@ -1,0 +1,478 @@
+<html>
+<head>
+    <title>BioData</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap');
+        
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #001f3f;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            z-index: 2;
+            position: relative;
+        }
+        .header-icons {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 2;
+        }
+        .header-icons .menu-icon {
+            position: relative;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .header-icons .menu-icon div {
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .header-icons .menu-icon div:nth-child(1) {
+            top: 0;
+        }
+        .header-icons .menu-icon div:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .header-icons .menu-icon div:nth-child(3) {
+            bottom: 0;
+        }
+        .header-icons .menu-icon.open div:nth-child(1) {
+            transform: rotate(45deg);
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+        .header-icons .menu-icon.open div:nth-child(2) {
+            opacity: 0;
+        }
+        .header-icons .menu-icon.open div:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+        .header-icons .social-icons {
+            display: flex;
+            align-items: center;
+        }
+        .header-icons .social-icons a {
+            font-size: 36px;
+            margin-right: 20px;
+            color: white;
+            text-decoration: none;
+        }
+        .menu {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            background: rgba(22, 27, 34, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .menu a {
+            display: block;
+            padding: 10px 20px;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(45, 51, 59, 0.5);
+        }
+        .menu a:last-child {
+            border-bottom: none;
+        }
+        .menu a:hover {
+            background-color: rgba(45, 51, 59, 0.5);
+        }
+        .intro-text {
+            margin-top: 100px;
+        }
+        .intro-text p {
+            margin: 0;
+            font-size: 18px;
+            color: #8b949e;
+            transition: opacity 1s ease-in-out;
+        }
+        .intro-text h1 {
+            margin: 10px 0;
+            font-size: 36px;
+            background: linear-gradient(270deg, #8b949e, #ffffff, #8b949e);
+            background-size: 600% 600%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 5s ease infinite;
+        }
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .intro-text h2 {
+            margin: 0;
+            font-size: 18px;
+            color: #c9d1d9;
+            transition: opacity 1s ease-in-out;
+        }
+        .profile-image {
+            margin-top: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 150px;
+            height: 150px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+        }
+          .profile-image {
+            margin-top: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            width: 200px;
+            height: 200px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+        }
+        .hello-text {
+            margin-top: 20px;
+            font-size: 48px;
+            font-weight: bold;
+            background: linear-gradient(270deg, #8b949e, #000000);
+            background-size: 600% 600%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient 5s ease infinite;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+            transition: opacity 1s ease-in-out;
+        }
+        .description-text {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #c9d1d9;
+            font-family: 'Roboto', sans-serif;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0));
+        }
+        .clock {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 900;
+        }
+        .location-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+        }
+        .location-text i {
+            margin-left: 10px;
+            font-size: 24px;
+        }
+        .location-text img {
+            position: absolute;
+            right: -50px;
+            width: 50px;
+            height: auto;
+        }
+        .about-me {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            cursor: pointer;
+        }
+        .about-me i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        .about-me-content {
+            display: none;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #c9d1d9;
+            font-family: 'Roboto', sans-serif;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        .about-me-content.open {
+            display: block;
+            max-height: 100px;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .dakuta-text {
+            display: none;
+            margin-top: 10px;
+            font-size: 18px;
+            color: #c9d1d9;
+            font-family: 'Roboto', sans-serif;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .dakuta-text.open {
+            display: block;
+            opacity: 1;
+        }
+        @media (min-width: 768px) {
+            .intro-text {
+                margin-top: 150px;
+            }
+            .intro-text p {
+                font-size: 24px;
+            }
+            .intro-text h1 {
+                font-size: 64px;
+            }
+            .intro-text h2 {
+                font-size: 32px;
+            }
+            .profile-image {
+                width: 200px;
+                height: 200px;
+            }
+            .hello-text {
+                font-size: 64px;
+            }
+            .description-text {
+                font-size: 24px;
+            }
+            .clock {
+                font-size: 32px;
+            }
+            .location-text {
+                font-size: 32px;
+            }
+            .location-text i {
+                font-size: 32px;
+            }
+            .location-text img {
+                right: -70px;
+                width: 70px;
+            }
+            .about-me {
+                font-size: 32px;
+            }
+            .about-me i {
+                font-size: 32px;
+            }
+            .about-me-content {
+                font-size: 24px;
+            }
+            .dakuta-text {
+                font-size: 24px;
+            }
+        }
+  </style>
+ </head>
+ <body>
+  <div class="overlay">
+  </div>
+  <div class="header-icons">
+   <div class="menu-icon" onclick="toggleMenu()">
+    <div>
+    </div>
+    <div>
+    </div>
+    <div>
+    </div>
+   </div>
+   <div class="social-icons">
+    <a class="github-icon" href="https://github.com" target="_blank">
+     <i class="fab fa-github">
+     </i>
+    </a>
+    <a class="instagram-icon" href="https://www.instagram.com/reja.alfrja_/" target="_blank">
+     <i class="fab fa-instagram">
+     </i>
+    </a>
+    <a class="tiktok-icon" href="https://www.tiktok.com/@zjaasyr_" target="_blank">
+     <i class="fab fa-tiktok">
+     </i>
+    </a>
+     <a class="SMPN-3-MUARA-BATU"href="https://www.google.com/search?q=SMPN+3+MUARA+BATU&oq=SMPN+3+MUARA+BATU&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIKCAIQABiABBiiBDIKCAMQABiABBiiBDIKCAQQABiABBiiBDIKCAUQABiABBiiBDIKCAYQABiABBiiBNIBCDU5MDFqMGo5qAIOsAIB&client=ms-android-samsung-gj-rev1&sourceid=chrome-mobile&ie=UTF-8#ebo=0"targe="_blank">
+       <i class="fa-solid fa-box-archive"></i>
+       </a> 
+       <a
+
+      <div class="SMPN-3-MUARA-BATU" href="https://www.google.com/search?q=SMPN+3+MUARA+BATU&oq=SMPN+3+MUARA+BATU&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIKCAIQABiABBiiBDIKCAMQABiABBiiBDIKCAQQABiABBiiBDIKCAUQABiABBiiBDIKCAYQABiABBiiBNIBCDU5MDFqMGo5qAIOsAIB&client=ms-android-samsung-gj-rev1&sourceid=chrome-mobile&ie=UTF-8#ebo=0" target"_blank" id="SMPN3"></div> </i class="fab fa-SMPN-3-MUARA-BATU" >
+       </div>
+       </div>
+  <div class="menu" id="menu">
+   <a href="index.html">
+    Home
+   </a>
+   <a href="#html2.html">
+    About
+   </a>
+   <a href="html.html">
+    Portofolio
+   </a>
+   <a href="html2.html">
+    Blog
+   </a>
+   <a href="html2.html">
+    Download
+   </a>
+       <a href="https://www.google.com/search?q=SMPN+3+MUARA+BATU&oq=SMPN+3+MUARA+BATU&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIKCAIQABiABBiiBDIKCAMQABiABBiiBDIKCAQQABiABBiiBDIKCAUQABiABBiiBDIKCAYQABiABBiiBNIBCDU5MDFqMGo5qAIOsAIB&client=ms-android-samsung-gj-rev1&sourceid=chrome-mobile&ie=UTF-8#ebo=0">SMPN 3</a> <i class="fa-solid fa-box-archive"> </i>
+  </div>
+  <div class="container">
+   <div class="intro-text">
+    <p id="intro-text">
+     Hello World, I'm
+    </p>
+    <h1>
+     Muhammad Alfahreza
+    </h1>
+    <h2 id="role">
+     Web Developer
+    </h2>
+   </div>
+   <div class="profile-image">
+    <img alt="A black and white cat" height="150" src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/f7221f18f6e539212fdeadb9aeb6bcee~c5_1080x1080.jpeg?lk3s=a5d48078&nonce=68031&refresh_token=3053efe90f1653ac3b5fecea124e7aba&x-expires=1729670400&x-signature=7alKPCUcyrf7zwbuomqlD6JvIKg%3D&shp=a5d48078&shcp=81f88b70" width="150"/>
+   </div>
+   <div class="about-me" onclick="toggleAboutMe()"
+   ></div>
+   
+    <h2>SMPN 3 MUARA BATU</h2>
+   </div>
+   <div class="dakuta-text" id="dakuta-text">
+    DAKUTA
+   </div>
+  </div>
+  <div class="footer">
+   <div class="hello-text" id="hello-text" onclick="toggleHello()">
+    HELLO!
+   </div>
+   <div class="description-text">
+    Hai, nama saya Muhammad Alfahreza berasal dari Aceh Utara, dan sedang belajar tentang ilmu teknik informatika dan komputer.
+   </div>
+   <div class="clock" id="clock">
+   </div>
+   <div class="location-text">
+    Krueng Mane
+    <i class="fas fa-map-marker-alt">
+    </i>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5b/Flag_of_Aceh.png" alt="Map of Aceh">
+   </div>
+  </div>
+  <script>
+   const roleElement = document.getElementById('role');
+        setInterval(() => {
+            roleElement.style.opacity = 0;
+            setTimeout(() => {
+                roleElement.textContent = roleElement.textContent === 'Web Developer' ? 'Web Designer' : 'Web Developer';
+                roleElement.style.opacity = 1;
+            }, 1000);
+        }, 5000);
+
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            const menuIcon = document.querySelector('.menu-icon');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            menuIcon.classList.toggle('open');
+        }
+
+        function toggleHello() {
+            const helloText = document.getElementById('hello-text');
+            helloText.style.opacity = 0;
+            setTimeout(() => {
+                helloText.textContent = helloText.textContent === 'HELLO!' ? 'SILAHKAN' : 'HELLO!';
+                helloText.style.opacity = 1;
+            }, 1000);
+        }
+
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            clock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function toggleIntroText() {
+            const introText = document.getElementById('intro-text');
+            introText.style.opacity = 0;
+            setTimeout(() => {
+                introText.textContent = introText.textContent === "Hello World, I'm" ? 'How are you?' : "Hello World, I'm";
+                introText.style.opacity = 1;
+            }, 1000);
+        }
+
+        setInterval(toggleIntroText, 15000);
+
+        function toggleAboutMe() {
+            const aboutMeContent = document.getElementById('about-me-content');
+            aboutMeContent.classList.toggle('open');
+        }
+
+        function showDakuta() {
+            const dakutaText = document.getElementById('dakuta-text');
+            dakutaText.classList.add('open');
+        }
+  </script>
+ </body>
+</html>
